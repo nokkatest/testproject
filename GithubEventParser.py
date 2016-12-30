@@ -9,6 +9,7 @@ import netrc
 import argparse
 import logging
 import os,platform
+import json
 
 __version__ = "0.1"
 
@@ -90,21 +91,31 @@ def main(argv):
 @app.route("/", methods=["GET", "POST"])
 def webhook():
    
-    #global ConfDictionary
-    #logging.info("---> Received webhook entry: %s" % version_id_projectKey)
     
-   
     
     if request.method == "GET":
         return "GithubPullRequestBambooBuilder reporting back (GET): OK"
     elif request.method == "POST":
         data = request.get_json() #(force=True)
         logging.info( "--> Received data")
-        logging.info( "%s" % pprint(data))
-       
+        #logging.info( "%s" % pprint(data))
+        
+        logging.debug('**********************************************')
         logging.debug('JSON Headers: %s', request.headers) 
         logging.debug('JSON Body: %s', request.get_data())
-        return "GithubPullRequestBambooBuilder reporting back (PUT): OK"
+
+
+        
+        if data.get('pull_request'):
+            logging.info('Processing Pull Request payload')
+            logging.info('USERINFO:%s' ,  data['pull_request']['user']['login'])
+            logging.info('TITLE:%s' , data['pull_request']['title'])
+            logging.info('ORIGINATING BRANCH:%s' , data['pull_request']['head']['ref'])
+            branch=(data['pull_request']['head']['ref'])
+        else:
+            branch="NO BRACN INFORMATION"
+            
+        return "GithubPullRequestBambooBuilder reporting back (PUT): OK   {0}".format(branch)
 
 
 if __name__ == "__main__":
