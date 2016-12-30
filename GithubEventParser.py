@@ -87,29 +87,25 @@ def main(argv):
       
     
  
-@app.route("/<version_id_projectKey>", methods=["GET", "POST"])
-def webhook(version_id_projectKey):
+@app.route("/", methods=["GET", "POST"])
+def webhook():
    
-    global ConfDictionary
-    logging.info("---> Hook entry:%s" % version_id_projectKey)
+    #global ConfDictionary
+    #logging.info("---> Received webhook entry: %s" % version_id_projectKey)
     
    
     
     if request.method == "GET":
-        return "GithubPullRequestBambooBuilder reporting back: OK"
-    else:   # Do the release notes generation
+        return "GithubPullRequestBambooBuilder reporting back (GET): OK"
+    elif request.method == "POST":
         data = request.get_json() #(force=True)
         logging.info( "--> Received data")
         logging.info( "%s" % pprint(data))
        
         logging.debug('JSON Headers: %s', request.headers) 
         logging.debug('JSON Body: %s', request.get_data())
-        
-        
+        return "GithubPullRequestBambooBuilder reporting back (PUT): OK"
 
-@app.route('/')
-def hello_world():  
-    return "Hello World! Flask server here!"
 
 if __name__ == "__main__":
    main(sys.argv[1:])
