@@ -1,6 +1,3 @@
-# README #
-
-TBD
 
 ### GitHub PullRequest Bamboo builder ###
 
@@ -14,4 +11,3 @@ TBD
 ### Contribution guidelines ###
 
 * TBD
-
