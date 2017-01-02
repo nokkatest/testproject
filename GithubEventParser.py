@@ -1,3 +1,10 @@
+# Flask server to parse Github PullRqeust events
+# -finding out origination branch
+#
+# mika.nokka1@gmail.com
+#
+
+
 from __future__ import unicode_literals
 from getpass import getpass
 from pprint import pprint
@@ -99,24 +106,24 @@ def webhook():
         data = request.get_json() #(force=True)
         logging.info( "--> Received data")
         #logging.info( "%s" % pprint(data))
+        branch="No branch information found. Maybe this was not PullRequest creation event" #default message
         
         logging.debug('**********************************************')
         logging.debug('JSON Headers: %s', request.headers) 
         logging.debug('JSON Body: %s', request.get_data())
+        logging.debug('**********************************************')
 
-
-        
-        if data.get('pull_request'):
-            logging.info('Processing Pull Request payload')
-            logging.info('USERINFO:%s' ,  data['pull_request']['user']['login'])
-            logging.info('TITLE:%s' , data['pull_request']['title'])
-            logging.info('ORIGINATING BRANCH:%s' , data['pull_request']['head']['ref'])
-            branch=(data['pull_request']['head']['ref'])
-        else:
-            branch="NO BRACN INFORMATION"
+        if data.get('pull_request'): # pull request event
+            action=data['action']
+            if (action=="opened"):  # "action": "opened", category must be "create the pull request"
+                logging.info('---Processing Pull Request payload----')
+                logging.info('USERINFO:%s' ,  data['pull_request']['user']['login'])
+                logging.info('TITLE:%s' , data['pull_request']['title'])
+                logging.info('ORIGINATING BRANCH:%s' , data['pull_request']['head']['ref'])
+                branch=(data['pull_request']['head']['ref'])
             
-        return "GithubPullRequestBambooBuilder reporting back (PUT): OK   {0}".format(branch)
+    return "GithubPullRequestBambooBuilder reporting back (PUT) Originating branch is: {0}".format(branch)
 
-
+    
 if __name__ == "__main__":
    main(sys.argv[1:])
