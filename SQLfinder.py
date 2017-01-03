@@ -53,7 +53,7 @@ if (heavy==True):
 
 branch="new_feature_V3"
 cursor=db.cursor()
-# Prepare SQL query to INSERT a record into the database.
+
 sql = """SELECT p.full_key, p.BUILD_ID, b.full_key, b.title, b.master_id 
   FROM BUILD p 
   JOIN BUILD b ON p.build_id = b.master_id 
@@ -67,12 +67,16 @@ try:
    cursor.execute(sql)
    # Fetch all the rows in a list of lists.
    results = cursor.fetchall()
-   print "reuslts: {0}".format(results)
+   logging.debug("---------------------------------------------------------")
+   logging.debug( "Full query results: {0}".format(results))
 
    for row in results:
-    print(row)
-    print "buildi:%s" %row[0]
-    print "branch:%s" %row[3]
+    logging.debug("---------------------------------------------------------")
+    logging.debug(row)
+    build=row[0]  
+    gitbranch=row[3] 
+    logging.info( "--> Bamboo build:%s" %build)
+    logging.info( "------> Builds Github branch:%s" %gitbranch)
 
 
    
@@ -80,10 +84,6 @@ except (MySQLdb.Error, MySQLdb.Warning) as e:
         print(e)
         
 
-#except:
-#   logging.error("Query error:\n{0}".format(sql))
 
-
-# disconnect from server
 db.close()
 
