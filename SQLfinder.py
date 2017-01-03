@@ -11,12 +11,21 @@ thisFile = __file__
 
     
 def main(argv):
-    
-    dbinfo="sqldb.com"
-    sqldb="bamboo_4"
-    heavy=False
+    SQLChecker("bamboo_4","sqldb.com","INFO","new_feature_V3")
 
-    loglevel = logging.DEBUG # Default logging level INFO, override with '-d' for logging.DEBUG
+##################################################################################
+# sqldb=name of the Bamboo database
+# dbinfo=name for .netrc user-password information
+# debuglevel=INFO or DEBUG  
+# branch=Git branch which relation to Bamboo build is investigated  
+def SQLChecker(sqldb,dbinfo,debuglevel,branch):    
+    #dbinfo="sqldb.com"
+    #sqldb="bamboo_4"
+    
+    if (debuglevel=="DEBUG"):
+        loglevel = logging.DEBUG # Default logging level INFO, override with '-d' for logging.DEBUG
+    elif (debuglevel=="INFO"):
+        loglevel = logging.INFO # Default logging level INFO, override with '-d' for logging.DEBUG
     logging.basicConfig(level=loglevel) 
 
 
@@ -41,10 +50,6 @@ def main(argv):
         logging.error("Failed to connect to mySQL: %s" % e)
         sys.exit(1)
 
-
-    
-
-    branch="new_feature_V3"
     cursor=db.cursor()
 
     sql = """SELECT p.full_key, p.BUILD_ID, b.full_key, b.title, b.master_id 
@@ -65,17 +70,19 @@ def main(argv):
         for row in results:
            logging.debug("---------------------------------------------------------")
            logging.debug(row)
-           build=row[0]  
-           gitbranch=row[3] 
-           logging.info( "--> Bamboo build:%s" %build)
-           logging.info( "------> Builds Github branch:%s" %gitbranch)
+           CommandBamboo(row[0]  , row[3] )
 
     except (MySQLdb.Error, MySQLdb.Warning) as e:
        logging.error("SQL query error:{0}".format(e))
         
     db.close()
 
-
+#####################################################################
+# Mimics the Bamboo build initiation command
+#
+def CommandBamboo(build,gitbranch):
+    logging.info( "--> Bamboo build:%s" %build)
+    logging.info( "------> Builds Github branch:%s" %gitbranch)
 
 
 if __name__ == "__main__":
