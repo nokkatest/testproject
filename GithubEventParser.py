@@ -20,7 +20,8 @@ import json
 
 __version__ = "0.1"
 
-from flask import Flask, request   # pip install flask
+from flask import Flask, request
+#import request   # pip install flask
 from jira import JIRA # pip install jira
 
 app = Flask(__name__)
@@ -91,8 +92,8 @@ def main(argv):
    
    
     logging.info("----> Flask server %s is starting running" % __version__)
-    app.run(debug=True)
-      
+    #app.run(debug=True)
+    app.run(host='82.118.195.16', debug=True) # 
     
  
 @app.route("/", methods=["GET", "POST"])
