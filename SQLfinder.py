@@ -10,6 +10,7 @@ __version__ = "0.1"
 
 dbinfo="sqldb.com"
 sqldb="bamboo_4"
+heavy=False
 
 loglevel = logging.DEBUG # Default logging level INFO, override with '-d' for logging.DEBUG
 logging.basicConfig(level=loglevel) 
@@ -37,5 +38,37 @@ except Exception,e:
     sys.exit(1)
 
 
+
+#development code, tobe flagged
+if (heavy==True): 
+    # prepare a cursor object using cursor() method
+    cursor = db.cursor()
+    # execute SQL query using execute() method.
+    cursor.execute("SELECT VERSION()")
+    # Fetch a single row using fetchone() method.
+    data = cursor.fetchone()
+    logging.debug ("Database version : %s " % data)
+    
+
+
+branch="new_feature_V3"
+# Prepare SQL query to INSERT a record into the database.
+sql = "SELECT p.full_key, p.BUILD_ID, b.full_key, b.title, b.master_id \
+  FROM BUILD p \
+  JOIN BUILD b ON p.build_id = b.master_id \
+  WHERE b.title={0} \
+  ORDER BY 1 DESC".format(branch)
+  
+try:
+   # Execute the SQL command
+   cursor.execute(sql)
+   # Fetch all the rows in a list of lists.
+   results = cursor.fetchall()
+   
+except:
+   logging.error("Query error: {0}".format(sql))
+
+
 # disconnect from server
 db.close()
+
