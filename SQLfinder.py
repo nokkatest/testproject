@@ -68,6 +68,13 @@ try:
    # Fetch all the rows in a list of lists.
    results = cursor.fetchall()
    print "reuslts: {0}".format(results)
+
+   for row in results:
+    print(row)
+    print "buildi:%s" %row[0]
+    print "branch:%s" %row[3]
+
+
    
 except (MySQLdb.Error, MySQLdb.Warning) as e:
         print(e)
