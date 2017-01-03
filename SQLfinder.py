@@ -52,21 +52,29 @@ if (heavy==True):
 
 
 branch="new_feature_V3"
+cursor=db.cursor()
 # Prepare SQL query to INSERT a record into the database.
-sql = "SELECT p.full_key, p.BUILD_ID, b.full_key, b.title, b.master_id \
-  FROM BUILD p \
-  JOIN BUILD b ON p.build_id = b.master_id \
-  WHERE b.title={0} \
-  ORDER BY 1 DESC".format(branch)
-  
+sql = """SELECT p.full_key, p.BUILD_ID, b.full_key, b.title, b.master_id 
+  FROM BUILD p 
+  JOIN BUILD b ON p.build_id = b.master_id 
+  WHERE b.title="{0}" 
+  ORDER BY 1 DESC""".format(branch)
+ 
+sql2="SELECT VERSION()"
+ 
 try:
    # Execute the SQL command
    cursor.execute(sql)
    # Fetch all the rows in a list of lists.
    results = cursor.fetchall()
+   print "reuslts: {0}".format(results)
    
-except:
-   logging.error("Query error: {0}".format(sql))
+except (MySQLdb.Error, MySQLdb.Warning) as e:
+        print(e)
+        
+
+#except:
+#   logging.error("Query error:\n{0}".format(sql))
 
 
 # disconnect from server
