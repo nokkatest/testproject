@@ -18,6 +18,8 @@ import logging
 import os,platform
 import json
 
+from SQLfinder import SQLChecker 
+
 __version__ = "0.1"
 
 from flask import Flask, request
