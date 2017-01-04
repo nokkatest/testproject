@@ -10,7 +10,7 @@ public class Hello {
     public static void main(String[] args) {
 		int x=0;
 		while ( x<20 ) {
-			System.out.println("Hello, World bbbb vvv "+x+"\n");
+			System.out.println("Hello, World bbbb vvv oo "+x+"\n");
 			x++;
 			}
 	}
