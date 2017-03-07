@@ -9,14 +9,4 @@
 
 * TBD
 
-### Contribution guidelines ###
-
-* TBD
-=======
-# testproject
-hello world for testing GitHub & Bamboo
-edited in a branch
-agaim
-
-terve
-rivirivi
+7.3.2017 line
