@@ -3,6 +3,7 @@
 #
 # mika.nokka1@gmail.com
 # added for PR testing
+# second added line
 
 
 from __future__ import unicode_literals
