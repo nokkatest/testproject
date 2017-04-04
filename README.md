@@ -9,11 +9,4 @@
 
 * TBD
 
-7.3.2017 line
-line2
-line3
-line4
-# TBD TITLE
-14.3.2017 demo
-second trial
-third trial
+4.4.2017 change made
