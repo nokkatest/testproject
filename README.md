@@ -5,5 +5,4 @@
 * Github PullRequest initiates Bamboo build in the source (originating branch)
 
 
-### How do I get set up? ###
-change4
+final change
